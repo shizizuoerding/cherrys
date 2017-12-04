@@ -1,0 +1,844 @@
+<% include header.ejs %>
+<script src="../js/TouchSlide.1.1.js"></script>
+<style>
+    /* 效果导航 */
+    .effectNav{ margin-top:10px;  border-top:1px solid #666; background:#999; padding-bottom:10px;  }
+    .effectNav h3{ padding:0 10px; background:#ddd; background:#333; color:#fff;  }
+    .effectNav ul{ font-size:0;  }
+    .effectNav li{ display:inline-block; font-size:12px; padding:0 10px; margin:10px 0 0 10px;  background:#cdcdcd;  }
+    .effectNav li.new{ background:#fce8cd;  }
+
+
+    /* 本例子css -------------------------------------- */
+    .focus{ width:100%;  margin:0 auto; position:relative; overflow:hidden;   }
+    .focus .hd{ width:100%; height:11px;  position:absolute; z-index:1; bottom:5px; text-align:center;  }
+    .focus .hd ul{ display:inline-block; height:5px; padding:3px 5px; background-color:rgba(255,255,255,0.7);
+        -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; font-size:0; vertical-align:top;
+    }
+    .focus .hd ul li{ display:inline-block; width:5px; height:5px; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; background:#8C8C8C; margin:0 5px;  vertical-align:top; overflow:hidden;   }
+    .focus .hd ul .on{ background:#FE6C9C;  }
+
+    .focus .bd{ position:relative; z-index:0; }
+    .focus .bd li img{ width:100%;  height:140px; background:url("../img/loading.gif") center center no-repeat;  }
+    .focus .bd li a{ -webkit-tap-highlight-color:rgba(0, 0, 0, 0); /* 取消链接高亮 */  }
+    .menu-bottom {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        background-color: #fff0e5;
+        height: 40px;
+        line-height: 40px;
+        padding: 5px 0;
+        box-sizing: border-box;
+        z-index: 5;
+    }
+    body{background-color: white;}
+    .menu-bottom img{width: 30px;height: 30px;}
+    .wordInput {
+        position: fixed;
+        bottom: 45px;
+        width: 100%;
+        padding: 0 40px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        z-index: 5;
+        background-color: white;
+    }
+
+    .wordInput .first {
+        position: absolute;
+        left: 0;
+        padding: 0 10px;
+        width: 20px;
+        height: 20px;
+        bottom: 0;
+    }
+
+    .wordInput .last {
+        position: absolute;
+        right: 0;
+        padding: 0 10px;
+        width: 20px;
+        height: 20px;
+        bottom: 0;
+    }
+
+    .wordInput textarea {
+        width: 100%;
+        border: 0;
+        border-bottom: 1px solid #8e8e93;
+        bottom: 0;
+    }
+
+    .content {
+        width: 100%;
+        height: auto;
+        padding: 10px 10px 80px 10px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        box-sizing: border-box;
+    }
+    .talk{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding-bottom: 15px;
+        box-sizing: border-box;
+    }
+    .talk-img{
+        width: 10%;
+        background-image: url("../img/head.png");
+        background-position: center;
+        background-size: cover;
+        padding-bottom: 10%;
+    }
+    .talk-words{
+        width: 90%;
+        word-break:break-all;
+        word-wrap:break-word ;
+    }
+    .talk-words div{
+        padding: 5px;
+        box-sizing: border-box;
+        border: 1px solid #dbdde2;
+        border-radius: 3px;
+        word-wrap:break-word;
+    }
+    .talk-words .left{
+        float: left;
+    }
+    .talk-words .right{
+        float: right;
+    }
+    .spece{
+        margin-left: 5px;
+    }
+    .title{
+        height: 44px;
+        line-height: 44px;
+        background-color: #fff0e5;
+        position: fixed;
+        top: 0;
+        z-index: 999;
+        color: #ff5c52;
+        padding: 0 10px;
+        box-sizing: border-box;
+        width: 100%;
+        /*opacity:0.5;*/
+    }
+</style>
+<style type="text/css">
+    body,html{
+        margin: 0;
+        padding:0;
+        height: 100%;
+        overflow: hidden !important;
+        background-color: white;
+    }
+    .content{
+        height: 100%;
+        width: 100%;
+        /*width: 1125px;*/
+        position: relative;
+        overflow: hidden;
+    }
+    .pages{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top:0;
+        left: 0;
+        z-index: 999;
+        overflow: hidden;
+    }
+    .pages {
+        -webkit-transition: all ease 500ms;
+        transition: all ease 500ms;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    /*.text-content{*/
+        /*display: block;*/
+        /*background:transparent;*/
+        /*color: white;*/
+        /*border:0;*/
+        /*height: 100px;*/
+        /*font-size: 18px;*/
+        /*width: 100%;*/
+        /*position: absolute;*/
+        /*text-align: center;*/
+        /*top:50%;*/
+        /*margin: 0px;*/
+        /*margin-top: -100px;*/
+    /*}*/
+    /*input[placeholder], [placeholder], *[placeholder] {*/
+        /*color: white !important;*/
+    /*}*/
+    ::-webkit-input-placeholder { /* WebKit browsers */
+        color: white;
+    }
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: white;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: white;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10+ */
+        color: white;
+    }
+    .arrow{
+        background-image: url("./img/arrow.svg");
+        position:absolute;
+        width: 40px;
+        height:40px;
+        bottom:30px;
+        right:20px;
+    }
+    .share{
+        /*background-image: url("./img/share.svg");*/
+        background-size: cover;
+        font-size: 30px;
+        color:white;
+        display: none;
+        position:fixed;
+        width: 40px;
+        height:40px;
+        bottom:30px;
+        right:30px;
+    }
+    .return{
+        /*background-image: url("../img/return.svg");*/
+        font-size: 30px;
+        color:white;
+        position:fixed;
+        width: 40px;
+        height:40px;
+        bottom:30px;
+        left:30px;
+    }
+    .page{
+        /*width: 100%;
+        height: 100%;*/
+    }
+    /*.index{*/
+        /*!*left: -100%;*!*/
+    /*}*/
+    .choose{
+        float: left;
+        overflow-y:scroll !important;
+        display: none;
+        z-index: 999;
+    }
+    .page {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+        z-index: 999;
+        float: left;
+    }
+    .voice-content{
+        /*position:absolute;
+        overflow-y:scroll !important; */
+    }
+    .voice-ul{
+        text-align: center;
+        position:relative;
+        padding-bottom: 70px;
+        overflow:scroll !important;
+    }
+    .voice-li{
+        display: inline-block;
+        padding:10px;
+        width: 65px;
+        height: 70px;
+        font-size: 12px;
+        text-align: center;
+    }
+    .voice-li label{
+        margin-left: 16px;
+    }
+    .voice-img{
+        width: 65px;
+        /*height: 50px;*/
+        height: 65px;
+        margin-bottom: 5px;
+        margin-left: 8px;
+        /*border-radius: 50%;*/
+        /*background-color: #FF6A00;*/
+    }
+    label{
+        color: #4A4A4A;
+    }
+    .voice-active label{
+        color: white;
+        padding: 1px 4px;
+        border-radius: 6px;
+        background: #0090ff;
+    }
+
+    .share-img{
+        width: 50px;
+        height: 50px;
+        margin-bottom: 5px;
+        border-radius: 25%;
+        background-color: white;
+    }
+
+    .voice-menu{
+        width: 40%;
+        height: 30px;
+        margin:30px auto;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid #FDE7DC;
+    }
+    .menu-li{
+        width: 50%;
+        height: 30px;
+        line-height: 30px;
+        float: left;
+        text-align: center;
+        color:white;
+        font-weight: bold;
+    }
+    .menu-li.active{
+        background-color: #FFCCB4;
+        color: white;
+        font-weight: bold;
+    }
+    .load{
+        position: absolute;
+        width: 50px;
+        text-align: center;
+        margin-top: 10px;
+        margin-left: 15px;
+    }
+    .spinner {
+        width: 32px;
+        height: 40px;
+        text-align: center;
+        margin:0 auto;
+        font-size: 10px;
+        /*line-height: 110px;*/
+    }
+
+    .spinner > div {
+        background-color: white;
+        height: 100%;
+        width: 4px;
+        display: inline-block;
+
+        -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
+        animation: stretchdelay 1.2s infinite ease-in-out;
+    }
+
+    .spinner .rect2 {
+        -webkit-animation-delay: -1.1s;
+        animation-delay: -1.1s;
+    }
+
+    .spinner .rect3 {
+        -webkit-animation-delay: -1.0s;
+        animation-delay: -1.0s;
+    }
+
+    .spinner .rect4 {
+        -webkit-animation-delay: -0.9s;
+        animation-delay: -0.9s;
+    }
+
+    .spinner .rect5 {
+        -webkit-animation-delay: -0.8s;
+        animation-delay: -0.8s;
+    }
+
+    @-webkit-keyframes stretchdelay {
+        0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+        20% { -webkit-transform: scaleY(1.0) }
+    }
+
+    @keyframes stretchdelay {
+        0%, 40%, 100% {
+            transform: scaleY(0.4);
+            -webkit-transform: scaleY(0.4);
+        }  20% {
+               transform: scaleY(1.0);
+               -webkit-transform: scaleY(1.0);
+           }
+    }
+    .share-content{
+        position:fixed;
+        bottom:0;
+        height: 197px;
+        width: 100%;
+        background-color: #F1F1F1;
+    }
+    #share-ui-dialog .share-content{
+        background: rgba(242,148,138,0.8);
+    }
+    .button-content{
+        padding:0 10px;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+    }
+    .share-title{
+        border-bottom: 1px solid #FFCCCC;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+        color: white;
+    }
+    .button-content div{
+        height: 65px;
+        line-height: 65px;
+    }
+    .cancel-button{
+        color: white;
+        border-top: 1px solid #FFCCCC;
+        width: 100%;
+        text-align: center;
+    }
+    .share-button-ul{
+    }
+    .share-button-ul a{
+        color: #737373;
+        display: block;
+        float: left;
+        width: 25%;
+        text-align: center;
+    }
+    .share-button-li{
+        display: inline-block;
+        color: white;
+        width: 50px;
+        font-size: 27px;
+        text-align: center;
+    }
+    #share-ui-dialog .share-content{
+        background: -moz-linear-gradient(top, #E16961 0%, #EEA97D 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E16961), color-stop(100%,#EEA97D));
+        background: -webkit-linear-gradient(top, #E16961 0%,#EEA97D 100%);
+        background: -o-linear-gradient(top, #E16961 0%,#EEA97D 100%);
+        background: -ms-linear-gradient(top, #E16961 0%,#EEA97D 100%);
+        background: linear-gradient(to bottom, #E16961 0%,#EEA97D 100%);
+    }
+    /*.index{*/
+        /*background: url("../img/3-6-3.jpg");*/
+        /*background-size: cover;*/
+    /*}*/
+    .choose{
+        background: url("../img/3-6-4.jpg");
+        background-size: cover;
+    }
+    /*.foot-bar{*/
+        /*position: absolute;*/
+        /*width: 100%;*/
+        /*text-align: center;*/
+        /*bottom: 30px;*/
+    /*}*/
+    /*.foot-button{*/
+        /*width: 110px;*/
+        /*height:30px;*/
+        /*line-height: 30px;*/
+        /*margin: 0 10px;*/
+        /*color: white;*/
+        /*border-radius: 20px;*/
+        /*display: inline-block;*/
+        /*background-color: #F0B091;*/
+    /*}*/
+</style>
+<body>
+<div class="word">
+    <div class="title">单人模式</div>
+    <div id="focus" class="focus">
+        <div class="hd">
+            <ul></ul>
+        </div>
+        <div class="bd">
+            <ul>
+                <li><a href="#"><img  src="../img/banner1.png" /></a></li>
+                <li><a href="#"><img  src="../img/banner2.png"/></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <!--<div class="talk">-->
+            <!--<div class="talk-img"></div>-->
+            <!--<div class="spece"></div>-->
+            <!--<div class="talk-words">你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊</div>-->
+        <!--</div>-->
+        <!--<div class="talk">-->
+            <!--<div class="talk-words">你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊</div>-->
+            <!--<div class="spece"></div>-->
+            <!--<div class="talk-img"></div>-->
+        <!--</div>-->
+    </div>
+    <div class="wordInput">
+        <img class="first" src="../img/voice.png"/>
+        <textarea id="word"></textarea>
+        <img class="last" src="../img/cancel.png"/>
+    </div>
+    <div class="menu-bottom">
+        <img src="../img/hint.png"/>
+        <img src="../img/two.png"/>
+        <img src="../img/ok.png" class="ok"/>
+    </div>
+</div>
+<div class="choose page">
+    <div class="voice-content">
+        <div class="voice-ul">
+            <div class="voice-menu">
+                <% for(var i = 0; i < tts.length;i++ ){ %>
+                <% if(i == 0){ %>
+                <div class="menu-li active"  id="menu<%= i %>"><%= tts[i].type %></div>
+                <% } else { %>
+                <div class="menu-li"  id="menu<%= i %>"><%= tts[i].type %></div>
+                <% } %>
+                <% } %>
+            </div>
+            <% for(var i = 0; i < tts.length;i++ ){ %>
+            <% if(i == 0){ %>
+            <div class="voice-menu-content menu<%= i %>"  style="margin-top:-10px">
+                <% for(var key in tts[i].content){ %>
+
+                <div class="voice-li" data-vcn="<%= tts[i].content[key].vcn %>" >
+                    <div class="load" style="display: none;margin-top: 20px;">
+                        <div class="spinner">
+                            <div class="rect1"></div>
+                            <div class="rect2"></div>
+                            <div class="rect3"></div>
+                            <div class="rect4"></div>
+                            <div class="rect5"></div>
+                        </div>
+                    </div>
+
+                    <div class="voice-img" style="background: url(<%= tts[i].content[key].img %>) no-repeat;background-size: 100%;"></div>
+                    <label><%= tts[i].content[key].name%></label>
+                </div>
+                <% } %>
+            </div>
+            <% } else { %>
+            <div class="voice-menu-content menu<%= i %>" style="display: none">
+                <% for(var key in tts[i].content){ %>
+                <div class="voice-li" data-vcn="<%= tts[i].content[key].vcn %>" >
+                    <div class="load" style="display: none">
+                        <div class="spinner">
+                            <div class="rect1"></div>
+                            <div class="rect2"></div>
+                            <div class="rect3"></div>
+                            <div class="rect4"></div>
+                            <div class="rect5"></div>
+                        </div>
+                    </div>
+                    <div class="voice-img" style="background: url(<%= tts[i].content[key].img %>) no-repeat;background-size: 100%;"></div>
+                    <label><%= tts[i].content[key].name%></label>
+                </div>
+                <% } %>
+            </div>
+            <% } %>
+            <% } %>
+
+            <!-- <div class="voice-li">
+                <div class="voice-img">
+                </div>
+                <label class="voice-active">普通话</label>
+            </div>
+            <div class="voice-li">
+                <div class="voice-img">
+                </div>
+                <label>普通话</label>
+            </div> -->
+
+        </div>
+    </div>
+    <div class="return iconfont icon-zuojiantou"></div>
+    <div class="share iconfont icon-zuihouyibanfenxiang"></div>
+</div>
+<div class="ui-dialog" id="share-ui-dialog">
+    <div class="share-content">
+        <div class="button-content">
+            <div class="share-title">
+                分享
+            </div>
+            <div class="share-button-ul">
+                <a href="javascript:share.qzone();">
+                    <div class="share-button-li iconfont icon-qzone">
+                    </div>
+                </a>
+                <a class="share-weixin">
+                    <div class="share-button-li iconfont icon-pengyouquan">
+                    </div>
+                </a>
+                <a href="javascript:share.weibo();">
+                    <div class="share-button-li iconfont icon-weibo">
+                    </div>
+                </a>
+                <a href="javascript:share.douban();">
+                    <div class="share-button-li iconfont icon-douban">
+                    </div>
+                </a>
+
+            </div>
+            <div class="cancel-button">
+                取消
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    var width = $(window).width();
+    var height = $(window).height();
+    $(".content").css({width:width*2});
+    $(".page").css({width:width});
+    $(".page").css({height:height});
+    $(".share").show();
+//    console.log(width+" "+height);
+
+    // $(".pages").css("-webkit-transform", "matrix(1, 0, 0, 1, -320, 0)");
+    // $("#share-ui-dialog").show();
+</script>
+<script type="text/javascript">
+    TouchSlide({
+        slideCell:"#focus",
+        titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+        mainCell:".bd ul",
+        effect:"left",
+        autoPlay:true,//自动播放
+        autoPage:true, //自动分页
+        switchLoad:"_src" //切换加载，真实图片路径为"_src"
+    });
+    $("#focus img").each(function() {
+        var bili= 9/16;var width = $(this).width(); $(this).css("height",width*bili);
+    });
+    $(".last").on("click",function () {
+//        console.log(1111);
+        var word = $("#word").val();
+//        console.log(word);
+        $("#word").val('');
+        if(word){
+            var words = '<div class="talk"> <div class="talk-img"></div><div class="spece"></div> <div class="talk-words"><div class="left">'+word+'</div></div></div>';
+            $(".content").append(words);
+        }
+    })
+    $(".ok").on("click",function () {
+        $(".word").hide();
+        $(".choose").show();
+    })
+    var $this = '';
+    $(".voice-li").on("click",function(){
+        $(".voice-li").removeClass("voice-active");
+        $(this).addClass("voice-active");
+        var content = $("#word").val();
+        var vcn = $(".voice-active").data("vcn");
+        var spd = 10;//语速
+        var vol = 10;//音量
+        $this = $(this);
+        var audio = cherry.play(content,vcn,{
+            success:function(audio){
+                console.log(audio);
+                console.log(audio.id);
+                console.log(audio.src);
+                audio.play();
+                $(".load").hide();
+                $this.children(".load").show();
+                var is_playFinish = setInterval(function(){
+                    console.log(audio.ended);
+                    if(audio.ended){
+                        $(".load").hide();
+                        console.log("结束");
+                        $this.children(".load").hide();
+                        window.clearInterval(is_playFinish);
+                    }
+                }, 10);
+                // window.location.href = audio.src;//音频下载
+            },
+            error:function(){
+                $(".load").hide();
+            }
+        });
+    })
+
+    $(".menu-li").on("click",function(){
+        $(".menu-li").removeClass("active");
+        $(this).addClass("active");
+        $(".voice-menu-content").hide();
+        $("."+this.id).show();
+    })
+
+
+
+    $(".return").on("click",function(){
+        // 	var volices = ["http://webapi.openspeech.cn/cttsPPPHHBBHNTZa-aQSHJGwlmMmaxoWSM06emmmmmmm5vk5A.mp3","http://webapi.openspeech.cn/cttsPPPHHBBHNTZdWaQSjgKw15f45UoaHn1Yummmmmmm5RkOE.mp3","http://webapi.openspeech.cn/cttsPPPHHBBHNTZ1laQSVN6wk1oxBEddOvurEmmmmmmm5R5pE.mp3"];
+        // 	var length = volices.length;
+        // 	var num = Math.floor(Math.random()*volices.length);
+        // 	console.log(num);
+        // 	audio = new Audio();
+        // 	audio.src = volices.pop();//每次读数组最后一个元素
+        //       	audio.addEventListener('ended', playEndedHandler, false);
+        //       	audio.play();
+        //       	// document.getElementById("audioBox").appendChild(audio);
+        //       	audio.loop = false;//禁止循环，否则无法触发ended事件
+        //       	function playEndedHandler(){
+        //           	audio.src = volices.pop();
+        //           	audio.play();
+        //           	console.log(volices.length);
+        //           	!volices.length && audio.removeEventListener('ended',playEndedHandler,false);//只有一个元素时解除绑定
+        //       	}
+
+        // for(var i = 0;i <= num;){
+        // 	audio = new Audio();
+        // 	audio.src = volices[i];
+        // 	console.log(audio.src);
+        // 	console.log(audio);
+        // 	audio.play();
+        // 	var is_playFinish = setInterval(function(){
+        // 			console.log(audio.ended);
+        // 			if(audio.ended){
+        // 				// $(".load").hide();
+        // 				console.log("结束");
+        // 				// $this.children(".load").hide();
+        // 				window.clearInterval(is_playFinish);
+        // 			}
+        // 		}, 10);
+        // 	console.log(i);
+        // 	i++;
+        // window.location.href = audio.src;//音频下载
+        // }
+        // var n = plays(volices,num);
+        // var n = 0;
+        // if(n <=num){
+        // 	n = plays(volices,n);
+        // 	console.log(n);
+        // }
+
+        // for(var i = 0;i <= num; i++){
+        // }
+        //语音播放
+        // audio = new Audio();
+        // audio.src = "/audio/test.mp3";
+        // audio.src = "http://webapi.openspeech.cn/cttsPPPHHBBHNTCAFaFWS9lawws1wIluv20XTmmmmmmmkAkmm.mp3";
+        // console.log(audio);
+        // audio.play();
+
+
+        // audio.autoplay = true;
+        // audio.addEventListener('canplay', canPlay, false);
+        // console.log(123456);
+        // var audio = document.createElement("AUDIO");
+        // audio.setAttribute("src", "http://webapi.openspeech.cn/cttsPPPHHBBHNT0aqa2fm2BwM0FNB-q5uPagImmmmmmmEBmsm.mp3");
+        // console.log(audio);
+        // audio.play();
+        // }
+        // }
+//        $(".pages").css("-webkit-transform", "matrix(1, 0, 0, 1, 0, 0)");
+        $(".word").show();
+        $(".choose").hide();
+    })
+
+
+    $(".share").on("click",function(){
+        var data = {
+            content : $("#word").val(),
+            vcn     : $(".voice-active").data("vcn")
+        }
+        $.ajax({
+            type : "POST",
+            data: data,
+            dataType: "json",
+            url : "/tts",
+            success : function(result){
+                console.log(result);
+                if(result == "102"){
+                    url = result;
+                    $("#share-ui-dialog").show();
+                    var share = new SimpleShare({
+                        url: result,
+                        title: 'cherry|话说你的故事',
+                        content: '我用cherry说了一段话，快来听吧',
+                        pic: 'http://ac-83a4olkt.clouddn.com/bc2fc28bcd7f3c17.jpg'
+                    });
+                }else{
+                    cherry.tipShow("您的网络有问题");
+                }
+                // document.querySelector('.sharetotqq').addEventListener('click',function() {
+                // 	share.tqq();
+                // });
+
+            },
+            error: function(error){
+                console.log(error.responseText);
+                if(error.responseText != "102"){
+                    $("#share-ui-dialog").show();
+                    url = error.responseText;
+                    share = new SimpleShare({
+                        url: error.responseText,
+                        title: 'cherry|话说你的故事',
+                        content: '我用cherry说了一段话，快来听吧。',
+                        pic: 'http://ac-83a4olkt.clouddn.com/bc2fc28bcd7f3c17.jpg'
+                    });
+                    // document.querySelector('.sharetotqq').addEventListener('click',function() {
+                    // 	share.tqq();
+                    // });
+                }
+            }
+        });
+
+        $(".share-weixin").on("click",function(){
+            cherry.weixin(url);
+        })
+    })
+    $(".cancel-button").on("click",function(){
+        $("#share-ui-dialog").hide();
+    })
+    var url = '';
+
+//    var share = new SimpleShare({
+//        url: '',
+//        title: 'cherry|话说你的故事',
+//        content: '我用cherry说了一段话，快来听吧',
+//        pic: 'http://ac-83a4olkt.clouddn.com/bc2fc28bcd7f3c17.jpg'
+//    });
+
+    function plays(volices,num,callback){
+        var n = 0;
+        audio = new Audio();
+        audio.src = volices[n];
+        console.log(audio.src);
+        console.log(audio);
+        audio.play();
+        console.log(audio.ended);
+        var is_playFinish = setInterval(function(){
+            console.log(audio.ended);
+            if(audio.ended){
+                // $(".load").hide();
+                console.log("结束");
+                // $this.children(".load").hide();
+                window.clearInterval(is_playFinish);
+            }
+        }, 10);
+        if(audio.ended){
+            n = n + 1;
+            console.log(n);
+            // callback.success(n);
+            if(n<=num){
+                plays(volices,num);
+            }
+            else{
+                callback.success(n);
+            }
+        }
+        console.log(n);
+    }
+</script>
+<% include footer.ejs %>
+</body>
