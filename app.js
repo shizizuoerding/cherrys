@@ -154,7 +154,7 @@ app.post('/tts', function(req, res) {
   voice.save().then(function(post) {
     // 成功保存之后，执行其他逻辑.
     // console.log('New object created with objectId: ' + post.id);
-    res.send("http://cherry102.leanapp.cn/voice/"+signature);
+    res.send("http://cherrys.leanapp.cn/voice/"+signature);
   }, function(err) {
     // 失败之后执行其他逻辑
     // error 是 AV.Error 的实例，包含有错误码和描述信息.
