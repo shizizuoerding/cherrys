@@ -139,16 +139,16 @@
         margin: 0;
         padding:0;
         height: 100%;
-        overflow: hidden !important;
+        /*overflow: hidden !important;*/
         background-color: white;
     }
-    .content{
-        height: 100%;
-        width: 100%;
-        /*width: 1125px;*/
-        position: relative;
-        overflow: hidden;
-    }
+    /*.content{*/
+        /*height: 100%;*/
+        /*width: 100%;*/
+        /*!*width: 1125px;*!*/
+        /*position: relative;*/
+        /*overflow: hidden;*/
+    /*}*/
     .pages{
         position: absolute;
         width: 100%;
@@ -489,7 +489,7 @@
     </div>
     <div class="menu-bottom">
         <img src="../img/hint.png"/>
-        <img src="../img/two.png"/>
+        <img src="../img/two.png" class="two"/>
         <img src="../img/ok.png" class="ok"/>
     </div>
 </div>
@@ -596,11 +596,11 @@
     </div>
 </div>
 <script>
-    var width = $(window).width();
-    var height = $(window).height();
-    $(".content").css({width:width*2});
-    $(".page").css({width:width});
-    $(".page").css({height:height});
+//    var width = $(window).width();
+//    var height = $(window).height();
+//    $(".content").css({width:width*2});
+//    $(".page").css({width:width});
+//    $(".page").css({height:height});
     $(".share").show();
 //    console.log(width+" "+height);
 
@@ -633,6 +633,9 @@
     $(".ok").on("click",function () {
         $(".word").hide();
         $(".choose").show();
+    })
+    $(".two").on("click",function () {
+        window.location.href="/dialog";
     })
     var $this = '';
     $(".voice-li").on("click",function(){

@@ -139,16 +139,16 @@
         margin: 0;
         padding:0;
         height: 100%;
-        overflow: hidden !important;
+        /*overflow: hidden !important;*/
         background-color: white;
     }
-    .content{
-        height: 100%;
-        width: 100%;
-        /*width: 1125px;*/
-        position: relative;
-        overflow: hidden;
-    }
+    /*.content{*/
+        /*height: 100%;*/
+        /*width: 100%;*/
+        /*!*width: 1125px;*!*/
+        /*position: relative;*/
+        /*overflow: hidden;*/
+    /*}*/
     .pages{
         position: absolute;
         width: 100%;
@@ -222,6 +222,17 @@
         height:40px;
         bottom:30px;
         left:30px;
+    }
+    .finish{
+        /*background-image: url("../img/return.svg");*/
+        font-size: 30px;
+        color:white;
+        position:fixed;
+        width: 40px;
+        height:40px;
+        bottom:10px;
+        left: 50%;
+        transform: translate(0, -50%);
     }
     .page{
         /*width: 100%;
@@ -457,31 +468,31 @@
     /*}*/
 </style>
 <body>
-<div class="title">对话模式</div>
-<div id="focus" class="focus">
-    <div class="hd">
-        <ul></ul>
-    </div>
-    <div class="bd">
-        <ul>
-            <li><a href="#"><img  src="../img/banner1.png" /></a></li>
-            <li><a href="#"><img  src="../img/banner2.png"/></a></li>
-        </ul>
-    </div>
-</div>
-<div class="content">
-    <!--<div class="talk">-->
-    <!--<div class="talk-img"></div>-->
-    <!--<div class="spece"></div>-->
-    <!--<div class="talk-words">你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊</div>-->
-    <!--</div>-->
-    <!--<div class="talk">-->
-    <!--<div class="talk-words">你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊</div>-->
-    <!--<div class="spece"></div>-->
-    <!--<div class="talk-img"></div>-->
-    <!--</div>-->
-</div>
 <div class="word">
+    <div class="title">对话模式</div>
+    <div id="focus" class="focus">
+        <div class="hd">
+            <ul></ul>
+        </div>
+        <div class="bd">
+            <ul>
+                <li><a href="#"><img  src="../img/banner1.png" /></a></li>
+                <li><a href="#"><img  src="../img/banner2.png"/></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <!--<div class="talk">-->
+        <!--<div class="talk-img"></div>-->
+        <!--<div class="spece"></div>-->
+        <!--<div class="talk-words">你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊</div>-->
+        <!--</div>-->
+        <!--<div class="talk">-->
+        <!--<div class="talk-words">你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊你好啊</div>-->
+        <!--<div class="spece"></div>-->
+        <!--<div class="talk-img"></div>-->
+        <!--</div>-->
+    </div>
     <div class="wordInput">
         <img class="first" src="../img/voice.png"/>
         <textarea id="word"></textarea>
@@ -489,8 +500,8 @@
     </div>
     <div class="menu-bottom">
         <img src="../img/hint.png"/>
-        <img src="../img/one.png"/>
-        <img src="../img/ok.png"/>
+        <img src="../img/one.png" class="one"/>
+        <img src="../img/ok.png" class="ok"/>
     </div>
 </div>
 <div class="choose page">
@@ -510,7 +521,7 @@
             <div class="voice-menu-content menu<%= i %>"  style="margin-top:-10px">
                 <% for(var key in tts[i].content){ %>
 
-                <div class="voice-li" data-vcn="<%= tts[i].content[key].vcn %>" >
+                <div class="voice-li" data-vcn="<%= tts[i].content[key].vcn %>" data-status="0" >
                     <div class="load" style="display: none;margin-top: 20px;">
                         <div class="spinner">
                             <div class="rect1"></div>
@@ -529,7 +540,7 @@
             <% } else { %>
             <div class="voice-menu-content menu<%= i %>" style="display: none">
                 <% for(var key in tts[i].content){ %>
-                <div class="voice-li" data-vcn="<%= tts[i].content[key].vcn %>" >
+                <div class="voice-li" data-vcn="<%= tts[i].content[key].vcn %>" data-status="0">
                     <div class="load" style="display: none">
                         <div class="spinner">
                             <div class="rect1"></div>
@@ -561,6 +572,7 @@
         </div>
     </div>
     <div class="return iconfont icon-zuojiantou"></div>
+    <div class="finish iconfont icon-queren"></div>
     <div class="share iconfont icon-zuihouyibanfenxiang"></div>
 </div>
 <div class="ui-dialog" id="share-ui-dialog">
@@ -596,11 +608,10 @@
     </div>
 </div>
 <script>
-    var width = $(window).width();
-    var height = $(window).height();
-    $(".content").css({width:width*2});
-    $(".page").css({width:width});
-    $(".page").css({height:height});
+//    var width = $(window).width();
+//    var height = $(window).height();
+//    $(".page").css({width:width});
+//    $(".page").css({height:height});
     $(".share").show();
     //    console.log(width+" "+height);
 
@@ -628,11 +639,11 @@
         if(word){
             var type = $(this).attr("data-type");
             if(type == "0"){
-                var words = '<div class="talk"> <div class="talk-img"></div><div class="spece"></div> <div class="talk-words"><div class="left">'+word+'</div></div></div>';
+                var words = '<div class="talk"> <div class="talk-img"></div><div class="spece"></div> <div class="talk-words"><div class="left word">'+word+'</div></div></div>';
                 $(this).attr("data-type","1");
             }
             else{
-                var words = '<div class="talk"> <div class="talk-words"><div class="right">'+word+'</div></div> <div class="spece"></div><div class="talk-img"></div></div>';
+                var words = '<div class="talk"> <div class="talk-words"><div class="right word">'+word+'</div></div> <div class="spece"></div><div class="talk-img"></div></div>';
                 $(this).attr("data-type","0");
             }
             $(".content").append(words);
@@ -642,40 +653,158 @@
         $(".word").hide();
         $(".choose").show();
     })
+    $(".one").on("click",function () {
+        window.location.href="/solo";
+    })
     var $this = '';
+    var voiceNum = 0;
     $(".voice-li").on("click",function(){
-        $(".voice-li").removeClass("voice-active");
-        $(this).addClass("voice-active");
-        var content = $("#word").val();
+//        $(".voice-li").removeClass("voice-active");
+//
+//        var content = $("#word").val();
         var vcn = $(".voice-active").data("vcn");
+        var status = $(this).attr("data-status");
+
+        if(status == "1"){
+            $(this).removeClass("voice-active");
+            voiceNum--;
+            $(this).attr("data-status","0");
+        }
+        if(voiceNum == 2){
+            alert("只能选择两个人物角色");
+            return;
+        }
+        if(status == "0"){
+            $(this).addClass("voice-active");
+            voiceNum++;
+            $(this).attr("data-status","1");
+        }
+
+
+
+//        var spd = 10;//语速
+//        var vol = 10;//音量
+//        $this = $(this);
+//        var audio = cherry.play(content,vcn,{
+//            success:function(audio){
+//                console.log(audio);
+//                console.log(audio.id);
+//                console.log(audio.src);
+//                audio.play();
+//                $(".load").hide();
+//                $this.children(".load").show();
+//                var is_playFinish = setInterval(function(){
+//                    console.log(audio.ended);
+//                    if(audio.ended){
+//                        $(".load").hide();
+//                        console.log("结束");
+//                        $this.children(".load").hide();
+//                        window.clearInterval(is_playFinish);
+//                    }
+//                }, 10);
+//                // window.location.href = audio.src;//音频下载
+//            },
+//            error:function(){
+//                $(".load").hide();
+//            }
+//        });
+    })
+    $(".finish").on("click",function () {
         var spd = 10;//语速
         var vol = 10;//音量
-        $this = $(this);
-        var audio = cherry.play(content,vcn,{
-            success:function(audio){
-                console.log(audio);
-                console.log(audio.id);
-                console.log(audio.src);
-                audio.play();
-                $(".load").hide();
-                $this.children(".load").show();
-                var is_playFinish = setInterval(function(){
-                    console.log(audio.ended);
-                    if(audio.ended){
-                        $(".load").hide();
-                        console.log("结束");
-                        $this.children(".load").hide();
-                        window.clearInterval(is_playFinish);
-                    }
-                }, 10);
-                // window.location.href = audio.src;//音频下载
-            },
-            error:function(){
-                $(".load").hide();
-            }
-        });
-    })
+        var contents = [];
+        var vcns = [];
+        var i = 0;
+        var j = 0;
+        var k = 0;
+        var voices = [];
+        var content;
+        var vcn;
+        $(".content .word").each(function () {
+            contents[i] = $(this).text();
+            i++;
+        })
+        if(contents.length == 1){
+            alert("只有一条语句");
+            return;
+        }
+        console.log(contents);
+        if(voiceNum == 2){
+            $(".voice-active").each(function () {
+                vcns[j] = $(this).attr("data-vcn");
+                j++;
+            })
+            var vcn1 = vcns[0];
+            var vcn2 = vcns[1];
 
+            (function iterator(i){
+                if(i==contents.length){
+                    //to do something.
+                    console.log(voices);
+                    voices.reverse();
+                    var length = voices.length;
+                    var num = Math.floor(Math.random()*voices.length);
+                    console.log(num);
+                    audio = new Audio();
+                    audio.src = voices.pop();//每次读数组最后一个元素
+                    audio.addEventListener('ended', playEndedHandler, false);
+                    audio.play();
+                    // document.getElementById("audioBox").appendChild(audio);
+                    audio.loop = false;//禁止循环，否则无法触发ended事件
+                    function playEndedHandler(){
+                        audio.src = voices.pop();
+                        audio.play();
+                        console.log(voices.length);
+                        !voices.length && audio.removeEventListener('ended',playEndedHandler,false);//只有一个元素时解除绑定
+                    }
+                    return;
+                }
+                //异步请求，
+                content = contents[i];
+                if(i%2 == 0){
+                    console.log(i);
+                    $this = $(this);
+                    var audio = cherry.play(content,vcn1,{
+                        success:function(audio){
+                            console.log(audio);
+                            console.log(audio.id);
+                            console.log(audio.src);
+                            voices[i] = audio.src;
+                            $(".load").hide();
+                            iterator(i+1);
+                        },
+                        error:function(){
+                            $(".load").hide();
+                        }
+
+                    });
+
+                }
+                else{
+                    console.log(i);
+                    $this = $(this);
+                    var audio = cherry.play(content,vcn2,{
+                        success:function(audio){
+                            console.log(audio);
+                            console.log(audio.id);
+                            console.log(audio.src);
+                            voices[i] = audio.src;
+                            $(".load").hide();
+                            iterator(i+1);
+                        },
+                        error:function(){
+                            $(".load").hide();
+                        }
+                    });
+                }
+             })(0)
+
+        }
+        else {
+            alert("人物角色不够");
+            return;
+        }
+    })
     $(".menu-li").on("click",function(){
         $(".menu-li").removeClass("active");
         $(this).addClass("active");
@@ -687,21 +816,21 @@
 
     $(".return").on("click",function(){
         // 	var volices = ["http://webapi.openspeech.cn/cttsPPPHHBBHNTZa-aQSHJGwlmMmaxoWSM06emmmmmmm5vk5A.mp3","http://webapi.openspeech.cn/cttsPPPHHBBHNTZdWaQSjgKw15f45UoaHn1Yummmmmmm5RkOE.mp3","http://webapi.openspeech.cn/cttsPPPHHBBHNTZ1laQSVN6wk1oxBEddOvurEmmmmmmm5R5pE.mp3"];
-        // 	var length = volices.length;
-        // 	var num = Math.floor(Math.random()*volices.length);
-        // 	console.log(num);
-        // 	audio = new Audio();
-        // 	audio.src = volices.pop();//每次读数组最后一个元素
-        //       	audio.addEventListener('ended', playEndedHandler, false);
-        //       	audio.play();
-        //       	// document.getElementById("audioBox").appendChild(audio);
-        //       	audio.loop = false;//禁止循环，否则无法触发ended事件
-        //       	function playEndedHandler(){
-        //           	audio.src = volices.pop();
-        //           	audio.play();
-        //           	console.log(volices.length);
-        //           	!volices.length && audio.removeEventListener('ended',playEndedHandler,false);//只有一个元素时解除绑定
-        //       	}
+//         	var length = volices.length;
+//         	var num = Math.floor(Math.random()*volices.length);
+//         	console.log(num);
+//         	audio = new Audio();
+//         	audio.src = volices.pop();//每次读数组最后一个元素
+//               	audio.addEventListener('ended', playEndedHandler, false);
+//               	audio.play();
+//               	// document.getElementById("audioBox").appendChild(audio);
+//               	audio.loop = false;//禁止循环，否则无法触发ended事件
+//               	function playEndedHandler(){
+//                   	audio.src = volices.pop();
+//                   	audio.play();
+//                   	console.log(volices.length);
+//                   	!volices.length && audio.removeEventListener('ended',playEndedHandler,false);//只有一个元素时解除绑定
+//               	}
 
         // for(var i = 0;i <= num;){
         // 	audio = new Audio();
@@ -755,9 +884,21 @@
 
 
     $(".share").on("click",function(){
+        var i = 0;
+        var j = 0;
+        var contents = [];
+        var vcns = [];
+        $(".content .word").each(function () {
+            contents[i] = $(this).text();
+            i++;
+        })
+        $(".voice-active").each(function () {
+            vcns[j] = $(this).attr("data-vcn");
+            j++;
+        })
         var data = {
-            content : $("#word").val(),
-            vcn     : $(".voice-active").data("vcn")
+            content : contents,
+            vcn     : vcns
         }
         $.ajax({
             type : "POST",
