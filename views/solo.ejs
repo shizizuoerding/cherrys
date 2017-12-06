@@ -622,13 +622,25 @@
     });
     $(".last").on("click",function () {
 //        console.log(1111);
-        var word = $("#word").val();
-//        console.log(word);
-        $("#word").val('');
-        if(word){
-            var words = '<div class="talk"> <div class="talk-img"></div><div class="spece"></div> <div class="talk-words"><div class="left">'+word+'</div></div></div>';
-            $(".content").append(words);
-        }
+//        var words = $(".content").text();
+//        console.log(words);
+//        if(!words){
+//            $(this).hide();
+//        }
+//        else {
+            var word = $("#word").val();
+//          console.log(word);
+            $("#word").val('');
+            if(word){
+                var words = '<div class="talk"> <div class="talk-img"></div><div class="spece"></div> <div class="talk-words"><div class="left">'+word+'</div></div></div>';
+                $(".content").append(words);
+                $(this).hide();
+            }
+            else {
+                alert("请输入文字信息");
+            }
+//        }
+
     })
     $(".ok").on("click",function () {
         $(".word").hide();
@@ -641,7 +653,7 @@
     $(".voice-li").on("click",function(){
         $(".voice-li").removeClass("voice-active");
         $(this).addClass("voice-active");
-        var content = $("#word").val();
+        var content = $(".left").text();
         var vcn = $(".voice-active").data("vcn");
         var spd = 10;//语速
         var vol = 10;//音量
@@ -751,7 +763,7 @@
 
     $(".share").on("click",function(){
         var data = {
-            content : $("#word").val(),
+            content : $(".left").text(),
             vcn     : $(".voice-active").data("vcn")
         }
         $.ajax({

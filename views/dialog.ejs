@@ -896,10 +896,12 @@
             vcns[j] = $(this).attr("data-vcn");
             j++;
         })
+        JSON.stringify(vcns);
         var data = {
-            content : contents,
-            vcn     : vcns
+            content : JSON.stringify(contents),
+            vcn     : JSON.stringify(vcns)
         }
+        console.log(data);
         $.ajax({
             type : "POST",
             data: data,
