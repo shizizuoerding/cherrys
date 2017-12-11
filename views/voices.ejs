@@ -177,9 +177,9 @@
 
     console.log(window.history);
 
-    if(window.history.length > 2){
-        $("#share-tip-dialog").show();
-    }
+//    if(window.history.length > 2){
+//        $("#share-tip-dialog").show();
+//    }
     //		cherry.play(content,vcn,{
     //			success:function(audio){
     //				voice = audio;
@@ -198,17 +198,17 @@
             console.log(vcns);
             contents = JSON.parse(content);
             console.log(contents);
-        if(!voice)
-        {
-            cherry.play(content,vcn,{
-                success:function(audio){
-                    voice = audio;
-                },
-                error:function(){
-
-                }
-            });
-        }else{
+//        if(!voice)
+//        {
+//            cherry.play(content,vcn,{
+//                success:function(audio){
+//                    voice = audio;
+//                },
+//                error:function(){
+//
+//                }
+//            });
+//        }else{
             var voices = [];
             var vcn1 = vcns[0];
             var vcn2 = vcns[1];
@@ -286,7 +286,7 @@
 //                }
 //            }, 10);
 
-        }
+//        }
     })
 
     $(".stop").on("click",function(){
