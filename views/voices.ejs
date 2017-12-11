@@ -194,8 +194,10 @@
         $(this).hide();
             var vcns = [];
             var contents = [];
-            vcns = JSON.parse(vcn)
+            vcns = JSON.parse(vcn);
+            console.log(vcns);
             contents = JSON.parse(content);
+            console.log(contents);
         if(!voice)
         {
             cherry.play(content,vcn,{
