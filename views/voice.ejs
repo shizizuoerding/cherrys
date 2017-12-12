@@ -156,12 +156,12 @@
 
 	<a href="/down"><div class="do">我也要去说</div></a>
 
-	<div class="ui-dialog" id="share-tip-dialog">
-	    <div class="share-tip-content">
-	    	<p class="big">请使用自带的分享功能分享</p>
-	    	<p class="small">通常分享按钮会在右上方或正下方</p>
-	    </div>
-	</div>
+	<!--<div class="ui-dialog" id="share-tip-dialog">-->
+	    <!--<div class="share-tip-content">-->
+	    	<!--<p class="big">请使用自带的分享功能分享</p>-->
+	    	<!--<p class="small">通常分享按钮会在右上方或正下方</p>-->
+	    <!--</div>-->
+	<!--</div>-->
 
 	<!-- <audio src="" class="audio" id="audio" style="display:none">
 		您的浏览器不支持 audio 标签。
@@ -173,7 +173,7 @@
 		var content ;
 		var vcn ;
 		var voice = '';
-		console.log("content:"+content+"   vcn:"+vcn);
+//		console.log("content:"+content+"   vcn:"+vcn);
 
 		console.log(window.history);
             var signature ='' ;
@@ -191,31 +191,29 @@
                 type : "get",
                 dataType: "json",
                 data :data,
-                url : "/signature/voice",
+                url : "/voice/voice",
                 success : function(result){
                      console.log(result);
-
+					content = result.data.content;
+					vcn = result.data.vcn;
                 },
                 error: function(error){
                     // alert(error);
                     console.log(error);
                 }
             });
-		if(window.history.length > 2){
-			$("#share-tip-dialog").show();
-		}
-//		cherry.play(content,vcn,{
-//			success:function(audio){
-//				voice = audio;
-//			},
-//			error:function(){
-//
-//			}
-//		});
+		cherry.play(content,vcn,{
+			success:function(audio){
+				voice = audio;
+			},
+			error:function(){
+
+			}
+		});
 
 		$(".play").on("click",function(){
-			$(".play-content div").show();
-			$(this).hide();
+//			$(".play-content div").show();
+//			$(this).hide();
 			if(!voice)
             {
 				cherry.play(content,vcn,{
@@ -244,8 +242,8 @@
 		$(".stop").on("click",function(){
 			if(voice)
             {
-            	$(".play-content div").show();
-				$(this).hide();
+//            	$(".play-content div").show();
+//				$(this).hide();
                 voice.pause();
             }
 		})
@@ -286,5 +284,7 @@
 		$("#share-tip-dialog").on("click",function(){
 			$("#share-tip-dialog").hide();
 		})
+		$(".ui-loading-block").removeClass("show");
 	</script>
+</body>
 </html>

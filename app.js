@@ -4,9 +4,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var timeout = require('connect-timeout');
 var todos = require('./routes/todos');
 var cloud = require('./cloud');
-var signature = require('./routes/signature');
+var voice = require('./routes/voice');
 
 var AV = require('leanengine');
 
@@ -20,6 +21,7 @@ app.use(express.static('public'));
 // 加载云代码方法
 app.use(cloud);
 
+app.use(timeout('15s'));
 // 使用 LeanEngine 中间件
 // （如果没有加载云代码方法请使用此方法，否则会导致部署失败，详细请阅读 LeanEngine 文档。）
 // app.use(AV.Cloud);
@@ -209,7 +211,7 @@ app.get('/dialog', function(req, res) {
 });
 // 可以将一类的路由单独保存在一个文件中
 app.use('/todos', todos);
-app.use('/signature', signature);
+app.use('/voice', voice);
 
 // 如果任何路由都没匹配到，则认为 404
 // 生成一个异常让后面的 err handler 捕获
