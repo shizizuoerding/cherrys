@@ -140,7 +140,7 @@ app.get('/voices/:signature', function(req, res) {
     query.first().then(function(results) {
         console.log(results);
         // 处理返回的结果数据
-        res.render('voice', {content:results.attributes.content,vcn:results.attributes.vcn});
+        res.render('voices', {content:results.attributes.content,vcn:results.attributes.vcn});
     }, function(error) {
         console.log('Error: ' + error.code + ' ' + error.message);
     });
