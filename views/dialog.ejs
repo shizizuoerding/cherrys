@@ -882,7 +882,9 @@
         $(".choose").hide();
     })
 
-
+//    function html2Escape(sHtml) {
+//        return sHtml.replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});
+//    }
     $(".share").on("click",function(){
         var i = 0;
         var j = 0;
@@ -906,7 +908,7 @@
             type : "POST",
             data: data,
             dataType: "json",
-            url : "/ttss",
+            url : "/signature/ttss",
             success : function(result){
                 console.log(result);
                 if(result == "102"){

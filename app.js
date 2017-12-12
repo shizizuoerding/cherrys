@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var todos = require('./routes/todos');
 var cloud = require('./cloud');
+var signature = require('./routes/signature');
 
 var AV = require('leanengine');
 
@@ -120,107 +121,6 @@ app.get('/down', function(req, res) {
     res.render('down');
 });
 
-app.get('/voice/:signature', function(req, res) {
-  var signature = req.params.signature;
-  var query = new AV.Query("Voice");
-  query.equalTo('signature', signature);
-  query.first().then(function(results) {
-    console.log(results);
-    // 处理返回的结果数据
-    res.render('voice', {content:results.attributes.content,vcn:results.attributes.vcn});
-  }, function(error) {
-    console.log('Error: ' + error.code + ' ' + error.message);
-  });
-});
-
-app.get('/voices/:signature', function(req, res) {
-    var signature = req.params.signature;
-    var query = new AV.Query("Voice");
-    query.equalTo('signature', signature);
-    query.first().then(function(results) {
-        console.log(results);
-        // 处理返回的结果数据
-        res.render('voices', {content:results.attributes.content,vcn:results.attributes.vcn});
-    }, function(error) {
-        console.log('Error: ' + error.code + ' ' + error.message);
-    });
-});
-app.post('/tts', function(req, res) {
-  var content = req.body.content;
-  var vcn = req.body.vcn;
-  // var spd = req.body.spd;
-  // var vol = req.body.vol;
-  var timestamp = new Date().getTime();
-  // var signature = faultylabs.MD5(timestamp + '&' + content + '&' + content);
-  // md5.update(timestamp + '&' + vcn);
-  // var signature = md5.digest('hex');
-  var signature =timestamp + vcn;
-  console.log(signature);
-
-  var voice = AV.Object.new('Voice');
-  voice.set('content', content);
-  voice.set('vcn', vcn);
-  // voice.set('spd', spd);
-  // voice.set('vol', vol);
-  voice.set('signature', signature);
-  voice.save().then(function(post) {
-    // 成功保存之后，执行其他逻辑.
-    // console.log('New object created with objectId: ' + post.id);
-    res.send("http://cherrys.leanapp.cn/voice/"+signature);
-  }, function(err) {
-    // 失败之后执行其他逻辑
-    // error 是 AV.Error 的实例，包含有错误码和描述信息.
-    console.log('Failed to create new object, with error message: ' + err.message);
-    res.send("102");
-  });
-});
-app.post('/ttss', function(req, res) {
-    var content = req.body.content;
-    var vcn = req.body.vcn;
-    // var spd = req.body.spd;
-    // var vol = req.body.vol;
-    var timestamp = new Date().getTime();
-    // var signature = faultylabs.MD5(timestamp + '&' + content + '&' + content);
-    // md5.update(timestamp + '&' + vcn);
-    // var signature = md5.digest('hex');
-    var signature =timestamp + vcn;
-    console.log(signature);
-
-    var voice = AV.Object.new('Voice');
-    voice.set('content', content);
-    voice.set('vcn', vcn);
-    // voice.set('spd', spd);
-    // voice.set('vol', vol);
-    voice.set('signature', signature);
-    voice.save().then(function(post) {
-        // 成功保存之后，执行其他逻辑.
-        // console.log('New object created with objectId: ' + post.id);
-        res.send("http://cherrys.leanapp.cn/voices/"+signature);
-    }, function(err) {
-        // 失败之后执行其他逻辑
-        // error 是 AV.Error 的实例，包含有错误码和描述信息.
-        console.log('Failed to create new object, with error message: ' + err.message);
-        res.send("102");
-    });
-});
-
-
-app.post('/feedback', function(req, res) {
-  var phoneType = req.body.phoneType;
-  var feedback = AV.Object.new('Feedback');
-  feedback.set('phoneType', phoneType);
-  feedback.save().then(function(post) {
-    // 成功保存之后，执行其他逻辑.
-    // console.log('New object created with objectId: ' + post.id);
-    res.send("220");
-  }, function(err) {
-    // 失败之后执行其他逻辑
-    // error 是 AV.Error 的实例，包含有错误码和描述信息.
-    console.log('Failed to create new object, with error message: ' + err.message);
-    res.send(err);
-  });
-});
-
 app.get('/hello', function(req, res) {
   res.render('hello', {});
 });
@@ -274,6 +174,14 @@ app.get('/test', function(req, res) {
   res.render('test', {});
 });
 
+app.get('/voice', function(req, res) {
+    res.render('voice', {});
+});
+
+app.get('/voices', function(req, res) {
+    res.render('voices', {});
+});
+
 app.get('/test1', function(req, res) {
   res.render('test1', {});
 });
@@ -301,6 +209,7 @@ app.get('/dialog', function(req, res) {
 });
 // 可以将一类的路由单独保存在一个文件中
 app.use('/todos', todos);
+app.use('/signature', signature);
 
 // 如果任何路由都没匹配到，则认为 404
 // 生成一个异常让后面的 err handler 捕获
