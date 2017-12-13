@@ -4,9 +4,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var voice = require('./routes/voice');
 var todos = require('./routes/todos');
 var cloud = require('./cloud');
-var voice = require('./routes/voice');
+
 
 var AV = require('leanengine');
 
