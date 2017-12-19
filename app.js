@@ -175,8 +175,8 @@ app.get('/test', function(req, res) {
   res.render('test', {});
 });
 
-app.get('/voice', function(req, res) {
-    res.render('voice', {});
+app.get('/voicess', function(req, res) {
+    res.render('voicess', {});
 });
 
 app.get('/voices', function(req, res) {
