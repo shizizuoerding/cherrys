@@ -52,25 +52,29 @@ router.get('/voices', function(req, res) {
 // 新增 Voice 项目
 router.post('/tts', function(req, res) {
     var content = req.body.content;
+    console.log(content);
     var vcn = req.body.vcn;
+    console.log(vcn);
     // var spd = req.body.spd;
     // var vol = req.body.vol;
     var timestamp = new Date().getTime();
     // var signature = faultylabs.MD5(timestamp + '&' + content + '&' + content);
     // md5.update(timestamp + '&' + vcn);
     // var signature = md5.digest('hex');
-    var signature =timestamp;
-    console.log(signature);
+    var signatures =timestamp;
 
+    var signature = parseInt(signatures);
+    console.log(signature);
     var voice = AV.Object.new('Voice');
     voice.set('content', content);
     voice.set('vcn', vcn);
     // voice.set('spd', spd);
     // voice.set('vol', vol);
     voice.set('signature', signature);
-    voice.save().then(function(post) {
+    voice.save().then(function(results) {
         // 成功保存之后，执行其他逻辑.
         // console.log('New object created with objectId: ' + post.id);
+        console.log(results);
         res.send("http://cherrys.leanapp.cn/voicess/?signature="+signature);
     }, function(err) {
         // 失败之后执行其他逻辑
@@ -82,14 +86,17 @@ router.post('/tts', function(req, res) {
 
 router.post('/ttss', function(req, res) {
     var content = req.body.content;
+    console.log(content);
     var vcn = req.body.vcn;
+    console.log(vcn);
     // var spd = req.body.spd;
     // var vol = req.body.vol;
     var timestamp = new Date().getTime();
     // var signature = faultylabs.MD5(timestamp + '&' + content + '&' + content);
     // md5.update(timestamp + '&' + vcn);
     // var signature = md5.digest('hex');
-    var signature =timestamp;
+    var signatures =timestamp;
+    var signature = parseInt(signatures);
     console.log(signature);
 
     var voice = AV.Object.new('Voice');
@@ -98,9 +105,10 @@ router.post('/ttss', function(req, res) {
     // voice.set('spd', spd);
     // voice.set('vol', vol);
     voice.set('signature', signature);
-    voice.save().then(function(post) {
+    voice.save().then(function(results) {
         // 成功保存之后，执行其他逻辑.
         // console.log('New object created with objectId: ' + post.id);
+        console.log(results);
         res.send("http://cherrys.leanapp.cn/voices/?signature="+signature);
     }, function(err) {
         // 失败之后执行其他逻辑
